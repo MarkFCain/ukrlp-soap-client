@@ -1,0 +1,16 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<configuration xmlns:xdt="http://schemas.microsoft.com/XML-Document-Transform">
+  <system.serviceModel>
+    <bindings>
+      <basicHttpBinding>
+        <binding name="ProviderQuerySoapBinding"  xdt:Locator="Match(ProviderQuerySoapBinding)" xdt:Transform="Remove" />
+      </basicHttpBinding>
+    </bindings>
+    <client>
+      <endpoint address=""
+          binding="basicHttpBinding" bindingConfiguration="ProviderQuerySoapBinding"
+          contract="ProviderQueryServiceV4.ProviderQueryPortType" name="ProviderQueryPort" 
+          xdt:Locator="Match(binding)" xdt:Transform="Remove"/>
+    </client>
+  </system.serviceModel>
+</configuration>

@@ -1,0 +1,15 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<configuration xmlns:xdt="http://schemas.microsoft.com/XML-Document-Transform">
+  <system.serviceModel xdt:Transform="InsertIfMissing">
+    <bindings xdt:Transform="InsertIfMissing">
+      <basicHttpBinding xdt:Transform="InsertIfMissing">
+        <binding name="ProviderQuerySoapBinding" xdt:Transform="InsertIfMissing" />
+      </basicHttpBinding>
+    </bindings>
+    <client xdt:Transform="InsertIfMissing">
+      <endpoint address=""
+          binding="basicHttpBinding" bindingConfiguration="ProviderQuerySoapBinding"
+          contract="ProviderQueryServiceV4.ProviderQueryPortType" name="ProviderQueryPort" xdt:Transform="InsertIfMissing" />
+    </client>
+  </system.serviceModel>  
+</configuration>

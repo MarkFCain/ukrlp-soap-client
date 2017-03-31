@@ -8,7 +8,7 @@ namespace Ukrlp.SoapApi.Client
     /// <summary>
     /// Query UKRLP for provider information
     /// </summary>
-    public class ProviderQueryApiClient
+    public class ProviderQueryApiClient : IProviderQueryApiClient
     {
         private readonly string _serviceEndpointUri;
 

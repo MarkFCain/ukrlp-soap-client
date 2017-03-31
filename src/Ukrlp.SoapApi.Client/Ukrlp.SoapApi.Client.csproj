@@ -79,6 +79,7 @@
     <None Include="Service References\ProviderQueryServiceV4\Ukrlp.SoapApi.Client.ProviderQueryServiceV4.response.datasource">
       <DependentUpon>Reference.svcmap</DependentUpon>
     </None>
+    <None Include="Ukrlp.SoapApi.Client.nuspec" />
   </ItemGroup>
   <ItemGroup>
     <WCFMetadataStorage Include="Service References\ProviderQueryServiceV4\" />

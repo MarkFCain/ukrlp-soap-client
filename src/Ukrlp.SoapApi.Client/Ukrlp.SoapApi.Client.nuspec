@@ -1,0 +1,27 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
+  <metadata>
+    <id>UKRLP.SoapAPI.Client</id>
+    <version>$version$</version>
+    <title>UKRLP SOAP API</title>
+    <authors>scottcowan</authors>
+    <owners>scottcowan</owners>
+    <licenseUrl>http://www.apache.org/licenses/LICENSE-2.0.html</licenseUrl>
+    <projectUrl>https://github.com/scottcowan/sfa-specbind-enhancements</projectUrl>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <description>API client to retrieve UK training provider information</description>
+    <summary>UKRLP API client</summary>
+    <tags>UKRLP</tags>
+    <language>en-US</language>
+    <dependencies>
+      <group targetFramework=".NETFramework4.5">
+        <dependency id="UKRLP.SoapAPI.Types" version="$version$" />
+      </group>
+    </dependencies>
+  </metadata>
+  <files>
+    <file src="bin\Release\UKRLP.SoapAPI.Client.dll" target="lib\net45" />
+    <file src="bin\Release\UKRLP.SoapAPI.Client.xml" target="lib\net45" />
+    <file src="Install\*.*" target="content" />
+  </files>
+</package>

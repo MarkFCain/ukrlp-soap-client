@@ -21,7 +21,7 @@
   </metadata>
   <files>
     <file src="bin\Release\UKRLP.SoapAPI.Client.dll" target="lib\net45" />
-    <file src="bin\Release\UKRLP.SoapAPI.Client.xml" target="lib\net45" />
+    <file src="bin\Release\UKRLP.SoapAPI.Client.XML" target="lib\net45" />
     <file src="Install\*.*" target="content" />
   </files>
 </package>

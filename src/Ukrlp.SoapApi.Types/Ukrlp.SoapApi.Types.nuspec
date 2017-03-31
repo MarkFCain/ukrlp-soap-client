@@ -16,6 +16,6 @@
   </metadata>
   <files>
     <file src="bin\Release\Ukrlp.SoapApi.Types.dll" target="lib\net45" />
-    <file src="bin\Release\Ukrlp.SoapApi.Types.XML" target="lib\net45" />
+    <!--<file src="bin\Release\Ukrlp.SoapApi.Types.XML" target="lib\net45" />-->
   </files>
 </package>

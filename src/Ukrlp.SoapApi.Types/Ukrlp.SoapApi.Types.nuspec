@@ -7,7 +7,7 @@
     <authors>scottcowan</authors>
     <owners>scottcowan</owners>
     <licenseUrl>http://www.apache.org/licenses/LICENSE-2.0.html</licenseUrl>
-    <projectUrl>https://github.com/scottcowan/sfa-specbind-enhancements</projectUrl>
+    <projectUrl>https://github.com/scottcowan/ukrlp-soap-client</projectUrl>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <description>API client to retrieve UK training provider information</description>
     <summary>UKRLP API client</summary>

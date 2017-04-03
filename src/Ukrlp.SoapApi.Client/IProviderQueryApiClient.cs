@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using Ukrlp.SoapApi.Client.Exceptions;
 using Ukrlp.SoapApi.Client.ProviderQueryServiceV4;
 using Ukrlp.SoapApi.Types;
 
@@ -16,6 +17,7 @@ namespace Ukrlp.SoapApi.Client
         /// <param name="queryId">query identifier (default : 2)</param>
         /// <param name="batchSize">the number of providers to appear in each request</param>
         /// <returns>Collection of providers</returns>
+        /// <exception cref="ProviderQueryException">an exception querying the UKRLP service</exception>
         ProviderResponse ProviderQuery(SelectionCriteriaStructure criteria, string queryId = "2", int batchSize = 35);
     }
 }

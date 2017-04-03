@@ -1,5 +1,8 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
+using System.Text.RegularExpressions;
+using Ukrlp.SoapApi.Client.Exceptions;
 using Ukrlp.SoapApi.Client.ProviderQueryServiceV4;
 using Ukrlp.SoapApi.Types;
 
@@ -11,6 +14,8 @@ namespace Ukrlp.SoapApi.Client
     public class ProviderQueryApiClient : IProviderQueryApiClient
     {
         private readonly string _serviceEndpointUri;
+        private static readonly Regex UkprnPattern = new Regex(@"^\d{8}");
+        private const string  BadUkprnMessage = "the ukprn wasn't 8 digits long";
 
         /// <summary>
         /// UKRLP SOAP API client
@@ -28,12 +33,25 @@ namespace Ukrlp.SoapApi.Client
         /// <param name="queryId">query identifier (default : 2)</param>
         /// <param name="batchSize">the number of providers to appear in each request</param>
         /// <returns>Collection of providers</returns>
-        public IEnumerable<Provider> ProviderQuery(SelectionCriteriaStructure criteria, string queryId = "2", int batchSize = 35)
+        /// <exception cref="ProviderQueryException">an exception querying the UKRLP service</exception>
+        public ProviderResponse ProviderQuery(SelectionCriteriaStructure criteria, string queryId = "2", int batchSize = 35)
+        {
+            var invalid = criteria.UnitedKingdomProviderReferenceNumberList.Where(x => !UkprnPattern.IsMatch(x)).ToList();
+            criteria.UnitedKingdomProviderReferenceNumberList = criteria.UnitedKingdomProviderReferenceNumberList.Except(invalid).ToArray();
+
+            return new ProviderResponse
+            {
+                Providers = GetProviderQueryResponse(criteria, queryId, batchSize),
+                Warnings = invalid.ToDictionary(ukprn => ukprn, ukprn => BadUkprnMessage)
+            };
+        }
+
+        private IEnumerable<Provider> GetProviderQueryResponse(SelectionCriteriaStructure criteria, string queryId, int batchSize)
         {
             var noOfUkprnsProcessed = 0;
 
-            var ukprnsListSize = criteria.UnitedKingdomProviderReferenceNumberList.Count();
-            var providerUkprns = criteria.UnitedKingdomProviderReferenceNumberList;
+            var providerUkprns = criteria.UnitedKingdomProviderReferenceNumberList.Where(x => UkprnPattern.IsMatch(x)).ToList();
+            var ukprnsListSize = providerUkprns.Count;
 
             do
             {
@@ -53,8 +71,17 @@ namespace Ukrlp.SoapApi.Client
 
                 using (var client = new ProviderQueryPortTypeClient("ProviderQueryPort", _serviceEndpointUri))
                 {
-                    var response = client.retrieveAllProviders(providerQueryStructure);
-                    foreach (var provider in response.MatchingProviderRecords?.Select(MapFromUkrlpProviderRecord) ?? new List<Provider>())
+                    ProviderQueryResponse response = null;
+                    try
+                    {
+                        response = client.retrieveAllProviders(providerQueryStructure);
+                    }
+                    catch (Exception ex)
+                    {
+                        throw new ProviderQueryException(ex.Message, criteria, ex);
+                    }
+
+                    foreach (var provider in response?.MatchingProviderRecords?.Select(MapFromUkrlpProviderRecord) ?? new List<Provider>())
                     {
                         yield return provider;
                     }

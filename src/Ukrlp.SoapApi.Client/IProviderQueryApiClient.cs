@@ -16,6 +16,6 @@ namespace Ukrlp.SoapApi.Client
         /// <param name="queryId">query identifier (default : 2)</param>
         /// <param name="batchSize">the number of providers to appear in each request</param>
         /// <returns>Collection of providers</returns>
-        IEnumerable<Provider> ProviderQuery(SelectionCriteriaStructure criteria, string queryId = "2", int batchSize = 35);
+        ProviderResponse ProviderQuery(SelectionCriteriaStructure criteria, string queryId = "2", int batchSize = 35);
     }
 }

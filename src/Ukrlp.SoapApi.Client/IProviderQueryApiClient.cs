@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using Ukrlp.SoapApi.Client.Exceptions;
 using Ukrlp.SoapApi.Client.ProviderQueryServiceV4;
 using Ukrlp.SoapApi.Types;
@@ -10,6 +11,11 @@ namespace Ukrlp.SoapApi.Client
     /// </summary>
     public interface IProviderQueryApiClient
     {
+        /// <summary>
+        /// An action run before each query to allow it to be logged
+        /// </summary>
+        Action<SelectionCriteriaStructure> LogRequest { get; set; }
+
         /// <summary>
         /// Search for a list of providers
         /// </summary>

@@ -28,6 +28,11 @@ namespace Ukrlp.SoapApi.Client
         }
 
         /// <summary>
+        /// An action run before each query to allow it to be logged
+        /// </summary>
+        public Action<SelectionCriteriaStructure> LogQuery { get; set; }
+
+        /// <summary>
         /// Search for a list of providers
         /// </summary>
         /// <param name="criteria">search criteria</param>
@@ -56,27 +61,29 @@ namespace Ukrlp.SoapApi.Client
             var providerUkprns = criteria.UnitedKingdomProviderReferenceNumberList.ToList();
             var ukprnsListSize = providerUkprns.Count;
 
-            do
+            using (var client = new ProviderQueryPortTypeClient("ProviderQueryPort", _serviceEndpointUri))
             {
-                var numberOfUkprnsUnprocessed = ukprnsListSize - noOfUkprnsProcessed;
-                var numberOfUkprnsToSend = numberOfUkprnsUnprocessed > batchSize
-                    ? batchSize
-                    : numberOfUkprnsUnprocessed;
-
-                criteria.UnitedKingdomProviderReferenceNumberList = providerUkprns.Skip(noOfUkprnsProcessed).Take(numberOfUkprnsToSend).ToArray();
-
-                var providerQueryStructure = new ProviderQueryStructure
+                do
                 {
-                    QueryId = queryId,
-                    SchemaVersion = "?",
-                    SelectionCriteria = criteria
-                };
+                    var numberOfUkprnsUnprocessed = ukprnsListSize - noOfUkprnsProcessed;
+                    var numberOfUkprnsToSend = numberOfUkprnsUnprocessed > batchSize
+                        ? batchSize
+                        : numberOfUkprnsUnprocessed;
 
-                using (var client = new ProviderQueryPortTypeClient("ProviderQueryPort", _serviceEndpointUri))
-                {
+                    criteria.UnitedKingdomProviderReferenceNumberList =
+                        providerUkprns.Skip(noOfUkprnsProcessed).Take(numberOfUkprnsToSend).ToArray();
+
+                    var providerQueryStructure = new ProviderQueryStructure
+                    {
+                        QueryId = queryId,
+                        SchemaVersion = "?",
+                        SelectionCriteria = criteria
+                    };
+
                     ProviderQueryResponse response = null;
                     try
                     {
+                        LogQuery?.Invoke(criteria);
                         response = client.retrieveAllProviders(providerQueryStructure);
                     }
                     catch (Exception ex)
@@ -84,8 +91,12 @@ namespace Ukrlp.SoapApi.Client
                         throw new ProviderQueryException(ex.Message, criteria, ex);
                     }
 
-                    var providers = response?.MatchingProviderRecords?.Select(MapFromUkrlpProviderRecord).ToList() ?? new List<Provider>();
-                    foreach (var missing in criteria.UnitedKingdomProviderReferenceNumberList.Where(x => providers.All(y => x != y.UnitedKingdomProviderReferenceNumber)))
+                    var providers = response?.MatchingProviderRecords?.Select(MapFromUkrlpProviderRecord).ToList() ??
+                                    new List<Provider>();
+                    foreach (
+                        var missing in
+                            criteria.UnitedKingdomProviderReferenceNumberList.Where(
+                                x => providers.All(y => x != y.UnitedKingdomProviderReferenceNumber)))
                     {
                         warnings.Add(missing, MissingMessage);
                     }
@@ -94,10 +105,9 @@ namespace Ukrlp.SoapApi.Client
                     {
                         yield return provider;
                     }
-                }
-
-                noOfUkprnsProcessed += numberOfUkprnsToSend;
-            } while (noOfUkprnsProcessed < ukprnsListSize);
+                    noOfUkprnsProcessed += numberOfUkprnsToSend;
+                } while (noOfUkprnsProcessed < ukprnsListSize);
+            }
         }
 
         private Provider MapFromUkrlpProviderRecord(ProviderRecordStructure record)

@@ -50,7 +50,7 @@ namespace Ukrlp.SoapApi.Client
         {
             var noOfUkprnsProcessed = 0;
 
-            var providerUkprns = criteria.UnitedKingdomProviderReferenceNumberList.Where(x => UkprnPattern.IsMatch(x)).ToList();
+            var providerUkprns = criteria.UnitedKingdomProviderReferenceNumberList.ToList();
             var ukprnsListSize = providerUkprns.Count;
 
             do

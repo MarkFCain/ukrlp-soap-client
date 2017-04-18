@@ -16,6 +16,7 @@ namespace Ukrlp.SoapApi.Client
         private readonly string _serviceEndpointUri;
         private static readonly Regex UkprnPattern = new Regex(@"^\d{8}");
         private const string  BadUkprnMessage = "the ukprn wasn't 8 digits long";
+        public const string MissingMessage = "the provider is missing from the response";
 
         /// <summary>
         /// UKRLP SOAP API client
@@ -39,14 +40,16 @@ namespace Ukrlp.SoapApi.Client
             var invalid = criteria.UnitedKingdomProviderReferenceNumberList.Where(x => !UkprnPattern.IsMatch(x)).ToList();
             criteria.UnitedKingdomProviderReferenceNumberList = criteria.UnitedKingdomProviderReferenceNumberList.Except(invalid).ToArray();
 
+            var warnings = invalid.ToDictionary(ukprn => ukprn, ukprn => BadUkprnMessage);
+            var providers = GetProviderQueryResponse(criteria, queryId, batchSize, warnings);
             return new ProviderResponse
             {
-                Providers = GetProviderQueryResponse(criteria, queryId, batchSize),
-                Warnings = invalid.ToDictionary(ukprn => ukprn, ukprn => BadUkprnMessage)
+                Providers = providers,
+                Warnings = warnings
             };
         }
 
-        private IEnumerable<Provider> GetProviderQueryResponse(SelectionCriteriaStructure criteria, string queryId, int batchSize)
+        private IEnumerable<Provider> GetProviderQueryResponse(SelectionCriteriaStructure criteria, string queryId, int batchSize, IDictionary<string, string> warnings)
         {
             var noOfUkprnsProcessed = 0;
 
@@ -81,7 +84,13 @@ namespace Ukrlp.SoapApi.Client
                         throw new ProviderQueryException(ex.Message, criteria, ex);
                     }
 
-                    foreach (var provider in response?.MatchingProviderRecords?.Select(MapFromUkrlpProviderRecord) ?? new List<Provider>())
+                    var providers = response?.MatchingProviderRecords?.Select(MapFromUkrlpProviderRecord).ToList() ?? new List<Provider>();
+                    foreach (var missing in criteria.UnitedKingdomProviderReferenceNumberList.Where(x => providers.All(y => x != y.UnitedKingdomProviderReferenceNumber)))
+                    {
+                        warnings.Add(missing, MissingMessage);
+                    }
+
+                    foreach (var provider in providers)
                     {
                         yield return provider;
                     }

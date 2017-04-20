@@ -14,7 +14,7 @@ namespace Ukrlp.SoapApi.Client
         /// <summary>
         /// An action run before each query to allow it to be logged
         /// </summary>
-        Action<SelectionCriteriaStructure> LogRequest { get; set; }
+        Action<SelectionCriteriaStructure> PreRequest { get; set; }
 
         /// <summary>
         /// Search for a list of providers

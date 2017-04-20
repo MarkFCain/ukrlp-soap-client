@@ -30,7 +30,9 @@ namespace Ukrlp.SoapApi.Client
         /// <summary>
         /// An action run before each query to allow it to be logged
         /// </summary>
-        public Action<SelectionCriteriaStructure> LogRequest { get; set; }
+        public Action<SelectionCriteriaStructure> PreRequest { get; set; }
+
+        public Action<ProviderQueryResponse> PostRequest { get; set; }
 
         /// <summary>
         /// Search for a list of providers
@@ -83,8 +85,9 @@ namespace Ukrlp.SoapApi.Client
                     ProviderQueryResponse response = null;
                     try
                     {
-                        LogRequest?.Invoke(criteria);
+                        PreRequest?.Invoke(criteria);
                         response = client.retrieveAllProviders(providerQueryStructure);
+                        PostRequest?.Invoke(response);
                     }
                     catch (Exception ex)
                     {

@@ -32,6 +32,9 @@ namespace Ukrlp.SoapApi.Client
         /// </summary>
         public Action<SelectionCriteriaStructure> PreRequest { get; set; }
 
+        /// <summary>
+        /// An action run after a response has been received
+        /// </summary>
         public Action<ProviderQueryResponse> PostRequest { get; set; }
 
         /// <summary>

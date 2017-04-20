@@ -17,6 +17,11 @@ namespace Ukrlp.SoapApi.Client
         Action<SelectionCriteriaStructure> PreRequest { get; set; }
 
         /// <summary>
+        /// An action run after a response has been received
+        /// </summary>
+        Action<ProviderQueryResponse> PostRequest { get; set; }
+
+        /// <summary>
         /// Search for a list of providers
         /// </summary>
         /// <param name="criteria">search criteria</param>

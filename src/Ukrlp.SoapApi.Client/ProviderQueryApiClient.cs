@@ -35,7 +35,7 @@ namespace Ukrlp.SoapApi.Client
         /// <summary>
         /// An action run after a response has been received
         /// </summary>
-        public Action<ProviderQueryResponse> PostRequest { get; set; }
+        public Action<SelectionCriteriaStructure, ProviderQueryResponse> PostRequest { get; set; }
 
         /// <summary>
         /// Search for a list of providers
@@ -90,7 +90,7 @@ namespace Ukrlp.SoapApi.Client
                     {
                         PreRequest?.Invoke(criteria);
                         response = client.retrieveAllProviders(providerQueryStructure);
-                        PostRequest?.Invoke(response);
+                        PostRequest?.Invoke(criteria, response);
                     }
                     catch (Exception ex)
                     {

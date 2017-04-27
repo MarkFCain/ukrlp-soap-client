@@ -19,7 +19,7 @@ namespace Ukrlp.SoapApi.Client
         /// <summary>
         /// An action run after a response has been received
         /// </summary>
-        Action<ProviderQueryResponse> PostRequest { get; set; }
+        Action<SelectionCriteriaStructure, ProviderQueryResponse> PostRequest { get; set; }
 
         /// <summary>
         /// Search for a list of providers

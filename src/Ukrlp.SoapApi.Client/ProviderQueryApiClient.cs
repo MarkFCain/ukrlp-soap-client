@@ -51,7 +51,7 @@ namespace Ukrlp.SoapApi.Client
             criteria.UnitedKingdomProviderReferenceNumberList = criteria.UnitedKingdomProviderReferenceNumberList.Except(invalid).ToArray();
 
             var warnings = invalid.ToDictionary(ukprn => ukprn, ukprn => BadUkprnMessage);
-            var providers = GetProviderQueryResponse(criteria, queryId, batchSize, warnings);
+            var providers = GetProviderQueryResponse(criteria, queryId, batchSize, warnings).ToList();
             return new ProviderResponse
             {
                 Providers = providers,

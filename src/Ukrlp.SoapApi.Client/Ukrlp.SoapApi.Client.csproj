@@ -46,12 +46,61 @@
     <Compile Include="Exceptions\ProviderQueryException.cs" />
     <Compile Include="IProviderQueryApiClient.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Service References\ProviderQueryServiceV4\Reference.cs">
-      <AutoGen>True</AutoGen>
+    <Compile Include="Service References\ProviderQueryServiceV4\AONrangeStructure.cs" />
+    <Compile Include="Service References\ProviderQueryServiceV4\AONstructure.cs" />
+    <Compile Include="Service References\ProviderQueryServiceV4\AssociationRecordStructure.cs" />
+    <Compile Include="Service References\ProviderQueryServiceV4\authenticationDetails.cs" />
+    <Compile Include="Service References\ProviderQueryServiceV4\BasicLandAndPropertyUnitStructure.cs" />
+    <Compile Include="Service References\ProviderQueryServiceV4\BLPUextentStructure.cs" />
+    <Compile Include="Service References\ProviderQueryServiceV4\BLPUpolygonStructure.cs" />
+    <Compile Include="Service References\ProviderQueryServiceV4\BLPUpolygonStructurePolygonType.cs" />
+    <Compile Include="Service References\ProviderQueryServiceV4\BSaddressStructure.cs" />
+    <Compile Include="Service References\ProviderQueryServiceV4\CoordinateStructure.cs" />
+    <Compile Include="Service References\ProviderQueryServiceV4\ElementaryStreetUnitStructure.cs" />
+    <Compile Include="Service References\ProviderQueryServiceV4\faultDetail.cs" />
+    <Compile Include="Service References\ProviderQueryServiceV4\IProviderQueryPortTypeClient.cs" />
+    <Compile Include="Service References\ProviderQueryServiceV4\ItemsChoiceType.cs" />
+    <Compile Include="Service References\ProviderQueryServiceV4\ItemsChoiceType1.cs" />
+    <Compile Include="Service References\ProviderQueryServiceV4\LandAndPropertyIdentifierStructure.cs" />
+    <Compile Include="Service References\ProviderQueryServiceV4\LogicalStatusType.cs" />
+    <Compile Include="Service References\ProviderQueryServiceV4\MaritalStatusType.cs" />
+    <Compile Include="Service References\ProviderQueryServiceV4\PersonBirthDateStructure.cs" />
+    <Compile Include="Service References\ProviderQueryServiceV4\PersonDeathDateStructure.cs" />
+    <Compile Include="Service References\ProviderQueryServiceV4\PersonMaritalStatusStructure.cs" />
+    <Compile Include="Service References\ProviderQueryServiceV4\PersonNameStructure.cs" />
+    <Compile Include="Service References\ProviderQueryServiceV4\ProvenanceCodeType.cs" />
+    <Compile Include="Service References\ProviderQueryServiceV4\ProvenanceStructure.cs" />
+    <Compile Include="Service References\ProviderQueryServiceV4\ProviderAliasesStructure.cs" />
+    <Compile Include="Service References\ProviderQueryServiceV4\ProviderContactStructure.cs" />
+    <Compile Include="Service References\ProviderQueryServiceV4\ProviderQueryParam.cs" />
+    <Compile Include="Service References\ProviderQueryServiceV4\ProviderQueryPortType.cs" />
+    <Compile Include="Service References\ProviderQueryServiceV4\ProviderQueryPortTypeClient.cs" />
+    <Compile Include="Service References\ProviderQueryServiceV4\ProviderQueryResponse.cs" />
+    <Compile Include="Service References\ProviderQueryServiceV4\ProviderQueryResultStructure.cs" />
+    <Compile Include="Service References\ProviderQueryServiceV4\ProviderQueryStructure.cs" />
+    <Compile Include="Service References\ProviderQueryServiceV4\ProviderRecordStructure.cs" />
+    <Compile Include="Service References\ProviderQueryServiceV4\QueryCriteriaConditionType.cs" />
+    <Compile Include="Service References\ProviderQueryServiceV4\ProviderQueryPortTypeChannel.cs">
+      <Generator>WCF Proxy Generator</Generator>
       <DesignTime>True</DesignTime>
-      <DependentUpon>Reference.svcmap</DependentUpon>
+      <LastGenOutput>ProviderQueryPortTypeChannel1.cs</LastGenOutput>
     </Compile>
     <Compile Include="ProviderQueryApiClient.cs" />
+    <Compile Include="Service References\ProviderQueryServiceV4\ProviderQueryPortTypeChannel1.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>ProviderQueryPortTypeChannel.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Service References\ProviderQueryServiceV4\RepresentativePointCodeType.cs" />
+    <Compile Include="Service References\ProviderQueryServiceV4\response.cs" />
+    <Compile Include="Service References\ProviderQueryServiceV4\SelectionCriteriaStructure.cs" />
+    <Compile Include="Service References\ProviderQueryServiceV4\StreetDescriptiveIdentifierStructure.cs" />
+    <Compile Include="Service References\ProviderQueryServiceV4\StreetReferenceTypeType.cs" />
+    <Compile Include="Service References\ProviderQueryServiceV4\StreetStructure.cs" />
+    <Compile Include="Service References\ProviderQueryServiceV4\StreetStructureStreetCrossReferences.cs" />
+    <Compile Include="Service References\ProviderQueryServiceV4\VerificationDetailsStructure.cs" />
+    <Compile Include="Service References\ProviderQueryServiceV4\VerificationLevelType.cs" />
+    <Compile Include="Service References\ProviderQueryServiceV4\YesNoType.cs" />
   </ItemGroup>
   <ItemGroup>
     <WCFMetadata Include="Service References\" />
@@ -59,44 +108,10 @@
   <ItemGroup>
     <None Include="Install\App.config.install.xdt" />
     <None Include="Install\App.config.uninstall.xdt" />
-    <None Include="Service References\ProviderQueryServiceV4\BS7666.xsd">
-      <SubType>Designer</SubType>
-    </None>
-    <None Include="Service References\ProviderQueryServiceV4\CommonSimpleTypes-v1-3.xsd">
-      <SubType>Designer</SubType>
-    </None>
-    <None Include="Service References\ProviderQueryServiceV4\PersonDescriptiveTypes.xsd">
-      <SubType>Designer</SubType>
-    </None>
-    <None Include="Service References\ProviderQueryServiceV4\ProviderQueryServiceV4.wsdl" />
-    <None Include="Service References\ProviderQueryServiceV4\ProviderQueryServiceV4.xsd">
-      <SubType>Designer</SubType>
-    </None>
-    <None Include="Service References\ProviderQueryServiceV4\UKRLP-CommonLibrary-v1-6.xsd">
-      <SubType>Designer</SubType>
-    </None>
-    <None Include="Service References\ProviderQueryServiceV4\Ukrlp.SoapApi.Client.ProviderQueryServiceV4.ProviderQueryResponse.datasource">
-      <DependentUpon>Reference.svcmap</DependentUpon>
-    </None>
-    <None Include="Service References\ProviderQueryServiceV4\Ukrlp.SoapApi.Client.ProviderQueryServiceV4.response.datasource">
-      <DependentUpon>Reference.svcmap</DependentUpon>
-    </None>
     <None Include="Ukrlp.SoapApi.Client.nuspec" />
   </ItemGroup>
   <ItemGroup>
     <WCFMetadataStorage Include="Service References\ProviderQueryServiceV4\" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Service References\ProviderQueryServiceV4\configuration91.svcinfo" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Service References\ProviderQueryServiceV4\configuration.svcinfo" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Service References\ProviderQueryServiceV4\Reference.svcmap">
-      <Generator>WCF Proxy Generator</Generator>
-      <LastGenOutput>Reference.cs</LastGenOutput>
-    </None>
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>

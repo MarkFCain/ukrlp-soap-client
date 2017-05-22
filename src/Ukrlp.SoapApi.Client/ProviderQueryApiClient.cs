@@ -13,7 +13,7 @@ namespace Ukrlp.SoapApi.Client
     /// </summary>
     public class ProviderQueryApiClient : IProviderQueryApiClient
     {
-        private readonly string _serviceEndpointUri;
+        private readonly IProviderQueryPortTypeClient _client;
         private static readonly Regex UkprnPattern = new Regex(@"^\d{8}");
         private const string  BadUkprnMessage = "the ukprn wasn't 8 digits long";
         public const string MissingMessage = "the provider is missing from the response";
@@ -22,9 +22,18 @@ namespace Ukrlp.SoapApi.Client
         /// UKRLP SOAP API client
         /// </summary>
         /// <param name="serviceEndpointUri">url to the UKRLP service</param>
-        public ProviderQueryApiClient(string serviceEndpointUri)
+        public ProviderQueryApiClient(string serviceEndpointUri) : this(CreateClient(serviceEndpointUri))
         {
-            _serviceEndpointUri = serviceEndpointUri;
+        }
+
+        internal ProviderQueryApiClient(IProviderQueryPortTypeClient client)
+        {
+            _client = client;
+        }
+
+        private static IProviderQueryPortTypeClient CreateClient(string serviceEndpointUri)
+        {
+            return new ProviderQueryPortTypeClient("ProviderQueryPort", serviceEndpointUri);
         }
 
         /// <summary>
@@ -66,54 +75,51 @@ namespace Ukrlp.SoapApi.Client
             var providerUkprns = criteria.UnitedKingdomProviderReferenceNumberList.ToList();
             var ukprnsListSize = providerUkprns.Count;
 
-            using (var client = new ProviderQueryPortTypeClient("ProviderQueryPort", _serviceEndpointUri))
+            do
             {
-                do
+                var numberOfUkprnsUnprocessed = ukprnsListSize - noOfUkprnsProcessed;
+                var numberOfUkprnsToSend = numberOfUkprnsUnprocessed > batchSize
+                    ? batchSize
+                    : numberOfUkprnsUnprocessed;
+
+                criteria.UnitedKingdomProviderReferenceNumberList =
+                    providerUkprns.Skip(noOfUkprnsProcessed).Take(numberOfUkprnsToSend).ToArray();
+
+                var providerQueryStructure = new ProviderQueryStructure
                 {
-                    var numberOfUkprnsUnprocessed = ukprnsListSize - noOfUkprnsProcessed;
-                    var numberOfUkprnsToSend = numberOfUkprnsUnprocessed > batchSize
-                        ? batchSize
-                        : numberOfUkprnsUnprocessed;
+                    QueryId = queryId,
+                    SchemaVersion = "?",
+                    SelectionCriteria = criteria
+                };
 
-                    criteria.UnitedKingdomProviderReferenceNumberList =
-                        providerUkprns.Skip(noOfUkprnsProcessed).Take(numberOfUkprnsToSend).ToArray();
+                ProviderQueryResponse response = null;
+                try
+                {
+                    PreRequest?.Invoke(criteria);
+                    response = _client.retrieveAllProviders(providerQueryStructure);
+                    PostRequest?.Invoke(criteria, response);
+                }
+                catch (Exception ex)
+                {
+                    throw new ProviderQueryException(ex.Message, criteria, ex);
+                }
 
-                    var providerQueryStructure = new ProviderQueryStructure
-                    {
-                        QueryId = queryId,
-                        SchemaVersion = "?",
-                        SelectionCriteria = criteria
-                    };
+                var providers = response?.MatchingProviderRecords?.Select(MapFromUkrlpProviderRecord).ToList() ??
+                                new List<Provider>();
+                foreach (
+                    var missing in
+                        criteria.UnitedKingdomProviderReferenceNumberList.Where(
+                            x => providers.All(y => x != y.UnitedKingdomProviderReferenceNumber)))
+                {
+                    warnings.Add(missing, MissingMessage);
+                }
 
-                    ProviderQueryResponse response = null;
-                    try
-                    {
-                        PreRequest?.Invoke(criteria);
-                        response = client.retrieveAllProviders(providerQueryStructure);
-                        PostRequest?.Invoke(criteria, response);
-                    }
-                    catch (Exception ex)
-                    {
-                        throw new ProviderQueryException(ex.Message, criteria, ex);
-                    }
-
-                    var providers = response?.MatchingProviderRecords?.Select(MapFromUkrlpProviderRecord).ToList() ??
-                                    new List<Provider>();
-                    foreach (
-                        var missing in
-                            criteria.UnitedKingdomProviderReferenceNumberList.Where(
-                                x => providers.All(y => x != y.UnitedKingdomProviderReferenceNumber)))
-                    {
-                        warnings.Add(missing, MissingMessage);
-                    }
-
-                    foreach (var provider in providers)
-                    {
-                        yield return provider;
-                    }
-                    noOfUkprnsProcessed += numberOfUkprnsToSend;
-                } while (noOfUkprnsProcessed < ukprnsListSize);
-            }
+                foreach (var provider in providers)
+                {
+                    yield return provider;
+                }
+                noOfUkprnsProcessed += numberOfUkprnsToSend;
+            } while (noOfUkprnsProcessed < ukprnsListSize);
         }
 
         private Provider MapFromUkrlpProviderRecord(ProviderRecordStructure record)

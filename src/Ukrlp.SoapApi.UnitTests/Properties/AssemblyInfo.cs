@@ -5,11 +5,11 @@ using System.Runtime.InteropServices;
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("Ukrlp.SoapApi.Client")]
+[assembly: AssemblyTitle("Ukrlp.SoapApi.UnitTests")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
-[assembly: AssemblyProduct("Ukrlp.SoapApi.Client")]
+[assembly: AssemblyProduct("Ukrlp.SoapApi.UnitTests")]
 [assembly: AssemblyCopyright("Copyright ©  2017")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
@@ -20,7 +20,7 @@ using System.Runtime.InteropServices;
 [assembly: ComVisible(false)]
 
 // The following GUID is for the ID of the typelib if this project is exposed to COM
-[assembly: Guid("ae02fe2d-80fb-4f82-ae89-9c99ca62eac9")]
+[assembly: Guid("00672e7b-1be7-4b3e-9818-2f13e5000ee8")]
 
 // Version information for an assembly consists of the following four values:
 //
@@ -32,8 +32,5 @@ using System.Runtime.InteropServices;
 // You can specify all the values or you can default the Build and Revision Numbers 
 // by using the '*' as shown below:
 // [assembly: AssemblyVersion("1.0.*")]
-[assembly: AssemblyVersion("0.0.0.0")]
-[assembly: AssemblyFileVersion("0.0.0.0")]
-[assembly: AssemblyInformationalVersion("0.0.0")]
-
-[assembly:InternalsVisibleTo("Ukrlp.SoapApi.UnitTests")]
+[assembly: AssemblyVersion("1.0.0.0")]
+[assembly: AssemblyFileVersion("1.0.0.0")]
